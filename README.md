@@ -51,6 +51,8 @@ Handoff format for agents and RPA builders: `solution_graph` + `business_slots` 
 
 Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123)
 
+**Community benchmark contributions** are pipeline metrics only — [not used by AI agents](https://github.com/huytr91/pa-schema/blob/main/docs/contribution-privacy.md).
+
 ## Not open source
 
 - Architecture Agent (LLM candidate generation, ranking engine)
