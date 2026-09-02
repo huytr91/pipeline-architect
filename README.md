@@ -2,38 +2,43 @@
 
 **Measure pipelines on your machine. Compare architectures. Share evidence. Build on a standard schema.**
 
-Pipeline Architect is an **open-core system for empirical AI pipeline architecture**.
-
-It is not simply “ask an LLM which model or OCR library to use.”
-
-Instead, Pipeline Architect:
-
-1. **Interviews the user** to understand workload, constraints, and hardware.
-2. **Researches existing solutions and public benchmark evidence** (where available) to establish a prior.
-3. **Generates competing pipeline architectures** rather than committing to the first plausible solution.
-4. **Runs candidates locally** on the user's actual machine and workload.
-5. **Measures and compares** latency, throughput, memory, quality, cost, and reliability.
-6. Produces a ranked set of **architecture recommendations backed by empirical evidence**.
-7. Packages the selected architecture into a structured **Solution Pipeline Packet** for downstream implementation tools, including coding agents and RPA platforms.
-
-> **Prior is a recommendation. Measurement is evidence.**
-
-Public benchmarks and research provide the initial prior. Local experiments turn that prior into evidence. As more users voluntarily contribute anonymized benchmark observations, the system can learn which architectural decisions perform best across different workloads, hardware, and runtime environments.
-
-> **Architect first. Code second.**
-
-Pipeline Architect determines *what* should be built and *why*. Coding agents and RPA platforms then implement the chosen architecture.
+Open-core · MIT · runs locally · no API key required for the harness.
 
 ---
 
-## Multi-domain (not OCR-only)
+## The problem isn't always the code
 
-Pipeline Architect targets **many AI workload domains** — document OCR, audio/ASR, vision, RAG, and more. A single **Solution Pipeline** can include:
+Have you ever built an AI product by trial and error — swap the model, try another OCR library, tweak the prompt — and still get results that are *almost* right?
 
-- **Design-only nodes** — email ingress, rules, notifications (spec-level, not measured like AI slots)
-- **`ai_pipeline_slot` nodes** — each slot has its own `domain`, benchmarked TOP N sub-pipelines, and evidence
+Example: **PDF → Word**, but tables misalign, fonts break, images land in the wrong place.
 
-OCR appears often in docs because it is the **first reference vertical** (V0 case study), not because the system is limited to OCR.
+Sometimes the issue isn't your **code**. It's your **pipeline** — which steps you chain, in what order, with what trade-offs on *your* hardware.
+
+**Pipeline Architect** shortens that loop:
+
+**Understand the problem → design the pipeline → benchmark on your machine → pick the best approach → export a [Solution Pipeline Packet](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123) to start coding.**
+
+> **Design the pipeline first. Code second.**
+
+> **Prior is a recommendation. Measurement is evidence.**
+
+Coding agents and RPA platforms implement the architecture; Pipeline Architect helps you decide *what* to build and *why* — with local measurements, not vibes alone.
+
+---
+
+## What it does (full system)
+
+Interview → research public evidence → propose competing architectures → **run candidates locally** → measure latency, memory, quality, cost → rank with evidence → package the choice for downstream tools.
+
+Steps 1–3 and ranking run in the **private / commercial layer** today. The **open repos** below let you benchmark and use the schema **standalone**.
+
+---
+
+## Multi-domain (not PDF/OCR only)
+
+Document AI, **ASR**, **vision**, RAG, and more. A **Solution Pipeline** mixes design nodes (email, rules, notify) with **`ai_pipeline_slot`** nodes — each slot has its own domain and measured sub-pipelines.
+
+OCR shows up often in docs as the **first reference vertical** (V0), not a product limit.
 
 | Domain | Harness example | Role |
 |--------|-----------------|------|
@@ -47,8 +52,8 @@ Details: [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/mult
 
 ## The gap
 
-Benchmarks like MLPerf answer: *"How fast is this model?"*  
-Few tools answer: *"For **this problem** on **this hardware**, which **end-to-end pipeline** should I build — and what's the evidence?"*
+MLPerf-style benchmarks ask: *"How fast is this model?"*  
+Pipeline Architect asks: *"For **this problem** on **this hardware**, which **end-to-end pipeline** should I build — and what's the evidence?"*
 
 ```
 Problem Fingerprint × Pipeline × Hardware → observations → ranked candidates
@@ -69,8 +74,6 @@ Problem Fingerprint × Pipeline × Hardware → observations → ranked candidat
 | Architecture generation & ranking | 🔒 Commercial layer | — |
 | Consulting web UI | 🔒 Private / preview | — |
 
-The open repos are useful **on their own** — run benchmarks locally, no API keys required.
-
 ### Quick start
 
 ```bash
@@ -85,23 +88,23 @@ python cli.py run \
   --samples-dir samples --db benchmarks.duckdb --runs 5
 ```
 
+Feedback, real-world benchmarks, and adapter PRs (Whisper, PaddleOCR, …) are welcome.
+
 ---
 
 ## Solution Pipeline Packet
 
-Handoff format for agents and RPA builders: `solution_graph` + `business_slots` + `open_items` + `integrations` (OAuth specs, no tokens).
+Structured handoff for agents and RPA: `solution_graph` + `business_slots` + `open_items` + `integrations` (OAuth specs, no tokens).
 
-Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123) — *one reference workflow; AI slots can be other domains.*
+Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123) — *one reference workflow; slots can use other domains.*
 
 ---
 
 ## Open core boundary
 
-**Open:** methodology, pipeline schema, benchmark protocol, harness, adapters, contribution format.
+**Open:** methodology, schema, benchmark protocol, harness, adapters, contribution format.
 
-**Commercial / hosted intelligence** (not in public repos): architecture ranking, performance prediction, mutation, failure patterns, hardware–workload correlations, experiment selection.
-
-Methodology is transparent. The decision engine evolves from accumulated empirical evidence.
+**Commercial / hosted:** ranking engine, prediction, mutation, failure patterns, experiment selection.
 
 > Show the evidence. Hide the recipe.
 
@@ -109,8 +112,8 @@ Methodology is transparent. The decision engine evolves from accumulated empiric
 
 ## Community contributions
 
-Benchmark contributions are **pipeline metrics only** — latency, RAM, quality, structural fingerprints.  
-**Not** used by interview or architecture agents. See [contribution privacy](https://github.com/huytr91/pa-schema/blob/main/docs/contribution-privacy.md).
+Pipeline **metrics only** (latency, RAM, quality) — not used by interview or architecture agents.  
+[Contribution privacy](https://github.com/huytr91/pa-schema/blob/main/docs/contribution-privacy.md)
 
 ```bash
 python cli.py contribute export --db benchmarks.duckdb --experiment-id <id> \
@@ -124,12 +127,12 @@ python cli.py contribute export --db benchmarks.duckdb --experiment-id <id> \
 
 | Component | State |
 |-----------|--------|
-| pa-harness V0 | ✅ Runnable (mock adapters; **any domain** — OCR is first demo) |
+| pa-harness V0 | ✅ Runnable (mock adapters; any domain) |
 | pa-schema v1.1 | ✅ Solution Pipeline Packet + examples |
-| pa-adapters | ✅ Mock reference adapters |
+| pa-adapters | ✅ Mock reference; real adapter PRs welcome |
 | Contribution export | ✅ CLI (upload API planned) |
 | Leaderboard / central API | 🚧 Planned |
-| Full product (steps 1–3, 6) | 🔒 Private preview |
+| Full product (interview + rank) | 🔒 Private preview |
 
 ## Docs
 
