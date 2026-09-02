@@ -26,6 +26,25 @@ Pipeline Architect determines *what* should be built and *why*. Coding agents an
 
 ---
 
+## Multi-domain (not OCR-only)
+
+Pipeline Architect targets **many AI workload domains** — document OCR, audio/ASR, vision, RAG, and more. A single **Solution Pipeline** can include:
+
+- **Design-only nodes** — email ingress, rules, notifications (spec-level, not measured like AI slots)
+- **`ai_pipeline_slot` nodes** — each slot has its own `domain`, benchmarked TOP N sub-pipelines, and evidence
+
+OCR appears often in docs because it is the **first reference vertical** (V0 case study), not because the system is limited to OCR.
+
+| Domain | Harness example | Role |
+|--------|-----------------|------|
+| `document-ocr` | `problem.example.yaml` | Reference vertical + email/SB123 packet |
+| `audio-transcription` | `problem.audio.example.yaml` | ASR / transcription slots |
+| `image-classification` | `problem.image.example.yaml` | Vision / classification slots |
+
+Details: [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md)
+
+---
+
 ## The gap
 
 Benchmarks like MLPerf answer: *"How fast is this model?"*  
@@ -72,7 +91,7 @@ python cli.py run \
 
 Handoff format for agents and RPA builders: `solution_graph` + `business_slots` + `open_items` + `integrations` (OAuth specs, no tokens).
 
-Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123)
+Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123) — *one reference workflow; AI slots can be other domains.*
 
 ---
 
@@ -105,7 +124,7 @@ python cli.py contribute export --db benchmarks.duckdb --experiment-id <id> \
 
 | Component | State |
 |-----------|--------|
-| pa-harness V0 | ✅ Runnable (mock adapters; real OCR PRs welcome) |
+| pa-harness V0 | ✅ Runnable (mock adapters; **any domain** — OCR is first demo) |
 | pa-schema v1.1 | ✅ Solution Pipeline Packet + examples |
 | pa-adapters | ✅ Mock reference adapters |
 | Contribution export | ✅ CLI (upload API planned) |
@@ -114,6 +133,7 @@ python cli.py contribute export --db benchmarks.duckdb --experiment-id <id> \
 
 ## Docs
 
+- [Multi-domain model](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md)
 - [Observation schema](https://github.com/huytr91/pa-schema/blob/main/docs/observation.md)
 - [Solution Pipeline Packet](https://github.com/huytr91/pa-schema/blob/main/docs/solution-pipeline-packet.md)
 - [Contribution privacy](https://github.com/huytr91/pa-schema/blob/main/docs/contribution-privacy.md)
