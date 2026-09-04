@@ -1,65 +1,97 @@
 # Pipeline Architect
 
-**Measure pipelines on your machine. Compare architectures. Share evidence. Build on a standard schema.**
+### Don't let AI lock you into the first pipeline it thinks of.
 
-Open-core · MIT · runs locally · no API key required for the harness.
+Open-core · MIT · [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md) · harness runs locally (no API key)
 
----
+When you ask an AI assistant how to solve a complex AI workload, it often gives you **one pipeline that sounds right**.
 
-## The problem isn't always the code
+It may be reasonable. It may even be the best choice.  
+But you usually don't know that yet — and once you start building, changing direction gets expensive.
 
-Have you ever built an AI product by trial and error — swap the model, try another OCR library, tweak the prompt — and still get results that are *almost* right?
+**Pipeline Architect takes a different approach:** explore the problem, then surface **3 viable pipeline candidates** so you can compare before you commit.
 
-Example: **PDF → Word**, but tables misalign, fonts break, images land in the wrong place.
-
-Sometimes the issue isn't your **code**. It's your **pipeline** — which steps you chain, in what order, with what trade-offs on *your* hardware.
-
-**Pipeline Architect** shortens that loop:
-
-**Understand the problem → design the pipeline → benchmark on your machine → pick the best approach → export a [Solution Pipeline Packet](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123) to start coding.**
-
-> **Design the pipeline first. Code second.**
-
-> **Prior is a recommendation. Measurement is evidence.**
-
-Coding agents and RPA platforms implement the architecture; Pipeline Architect helps you decide *what* to build and *why* — with local measurements, not vibes alone.
+> **Don't ask AI for the pipeline. Ask it to show you the possibilities.**
 
 ---
 
-## What it does (full system)
+## The problem
 
-Interview → research public evidence → propose competing architectures → **run candidates locally** → measure latency, memory, quality, cost → rank with evidence → package the choice for downstream tools.
+You ask:
 
-Steps 1–3 and ranking run in the **private / commercial layer** today. The **open repos** below let you benchmark and use the schema **standalone**.
+> *"How should I build a system that turns scanned PDFs into structured Excel files?"*
+
+A typical assistant answers:
+
+```text
+PDF → OCR → LLM → Excel
+```
+
+Looks good. You build it. Then OCR fails on your docs, tables collapse, or the LLM invents cells.
+
+The AI wasn't necessarily "wrong".  
+**It committed to one approach before you explored the alternatives.**
+
+---
+
+## Three candidates, not one answer
+
+Pipeline Architect treats architecture as a **choice between plausible approaches**.
+
+After understanding your workload and constraints, it presents **3 viable architectures** — for example:
+
+```text
+1. Reliable        OCR → Layout Parser → Validator
+                   Simple, predictable
+
+2. Quality-first   OCR → Vision → LLM → Validator
+                   Better for difficult documents
+
+3. Lightweight     Local OCR → Rules → Excel
+                   Lower cost, local processing
+```
+
+These aren't *the* answer. They're **candidates worth comparing**.  
+You pick the direction that matches your priorities (quality, speed, cost, privacy, simplicity).
+
+### Typical AI workflow
+
+```text
+Problem → AI reasoning → One recommendation → Build
+```
+
+### Pipeline Architect
+
+```text
+Problem → Interview → Constraints → Explore alternatives
+              ↓
+     ┌─────────┬─────────┬─────────┐
+     │ Option 1│ Option 2│ Option 3│
+     └─────────┴─────────┴─────────┘
+              ↓
+         You decide → measure on your machine → commit
+```
+
+**The goal isn't to replace your judgment** — it's to give you **more than one reasonable direction before you lock in.**
+
+> Prior is a recommendation. Measurement is evidence.  
+> Design the pipeline first. Code second.
+
+Generated pipelines are **hypotheses**, not automatic optima. Validate them on your real workload before shipping.
 
 ---
 
 ## Multi-domain (not PDF/OCR only)
 
-Document AI, **ASR**, **vision**, RAG, and more. A **Solution Pipeline** mixes design nodes (email, rules, notify) with **`ai_pipeline_slot`** nodes — each slot has its own domain and measured sub-pipelines.
+Document AI, **ASR**, **vision**, RAG, and more. OCR appears in examples as the **first reference vertical**, not a product limit.
 
-OCR shows up often in docs as the **first reference vertical** (V0), not a product limit.
-
-| Domain | Harness example | Role |
-|--------|-----------------|------|
-| `document-ocr` | `problem.example.yaml` | Reference vertical + email/SB123 packet |
-| `audio-transcription` | `problem.audio.example.yaml` | ASR / transcription slots |
-| `image-classification` | `problem.image.example.yaml` | Vision / classification slots |
+| Domain | Harness example |
+|--------|-----------------|
+| `document-ocr` | `problem.example.yaml` |
+| `audio-transcription` | `problem.audio.example.yaml` |
+| `image-classification` | `problem.image.example.yaml` |
 
 Details: [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md)
-
----
-
-## The gap
-
-MLPerf-style benchmarks ask: *"How fast is this model?"*  
-Pipeline Architect asks: *"For **this problem** on **this hardware**, which **end-to-end pipeline** should I build — and what's the evidence?"*
-
-```
-Problem Fingerprint × Pipeline × Hardware → observations → ranked candidates
-                                                    ↓
-                          Solution graph + AI slots + export packet
-```
 
 ---
 
@@ -70,11 +102,14 @@ Problem Fingerprint × Pipeline × Hardware → observations → ranked candidat
 | Schema & handoff format | ✅ Public | [pa-schema](https://github.com/huytr91/pa-schema) |
 | Local benchmark harness | ✅ Public | [pa-harness](https://github.com/huytr91/pa-harness) |
 | Component adapters | ✅ Public | [pa-adapters](https://github.com/huytr91/pa-adapters) |
-| Interview agent | 🔒 Private / preview | — |
-| Architecture generation & ranking | 🔒 Commercial layer | — |
+| Interview + TOP 3 candidates | 🔒 Private / preview | — |
+| Ranking / prediction engine | 🔒 Commercial layer | — |
 | Consulting web UI | 🔒 Private / preview | — |
 
-### Quick start
+**Open today:** measure candidates locally and use a standard Solution Pipeline Packet.  
+**Full product:** interview → 3 candidates → evidence ranking (preview / commercial).
+
+### Quick start (harness)
 
 ```bash
 git clone https://github.com/huytr91/pa-harness.git
@@ -94,9 +129,10 @@ Feedback, real-world benchmarks, and adapter PRs (Whisper, PaddleOCR, …) are w
 
 ## Solution Pipeline Packet
 
-Structured handoff for agents and RPA: `solution_graph` + `business_slots` + `open_items` + `integrations` (OAuth specs, no tokens).
+After you choose a direction, export a structured handoff for coding agents and RPA:  
+`solution_graph` + `business_slots` + `open_items` + `integrations` (OAuth specs, no tokens).
 
-Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123) — *one reference workflow; slots can use other domains.*
+Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema/tree/main/examples/email-sb123)
 
 ---
 
@@ -104,7 +140,7 @@ Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema
 
 **Open:** methodology, schema, benchmark protocol, harness, adapters, contribution format.
 
-**Commercial / hosted:** ranking engine, prediction, mutation, failure patterns, experiment selection.
+**Commercial / hosted:** ranking weights, prediction, mutation, failure patterns, experiment selection.
 
 > Show the evidence. Hide the recipe.
 
@@ -132,7 +168,7 @@ python cli.py contribute export --db benchmarks.duckdb --experiment-id <id> \
 | pa-adapters | ✅ Mock reference; real adapter PRs welcome |
 | Contribution export | ✅ CLI (upload API planned) |
 | Leaderboard / central API | 🚧 Planned |
-| Full product (interview + rank) | 🔒 Private preview |
+| Interview + TOP 3 product UX | 🔒 Private preview |
 
 ## Docs
 
