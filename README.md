@@ -1,17 +1,21 @@
 # Pipeline Architect
 
-### Don't let AI lock you into the first pipeline it thinks of.
+### Compare three AI pipelines before you build the wrong one.
 
-Open-core · MIT · [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md) · harness runs locally (no API key)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/huytr91/pa-adapters/issues)
+[![good first issue](https://img.shields.io/badge/good%20first%20issue-welcome-1f6feb.svg)](https://github.com/huytr91/pa-adapters/labels/good%20first%20issue)
 
-When you ask an AI assistant how to solve a complex AI workload, it often gives you **one pipeline that sounds right**.
+**Open-core · MIT · [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md) · harness runs locally (no API key)**
 
-It may be reasonable. It may even be the best choice.  
-But you usually don't know that yet — and once you start building, changing direction gets expensive.
+Most AI assistants give you **one** pipeline that sounds right.  
+It may be reasonable — even correct — but you usually don't know that yet, and changing direction after you start coding is expensive.
 
-**Pipeline Architect takes a different approach:** explore the problem, then surface **3 viable pipeline candidates** so you can compare before you commit.
+**Pipeline Architect** explores the problem with you, then surfaces **three viable pipeline candidates** so you can compare before you commit.
 
-> **Don't ask AI for the pipeline. Ask it to show you the possibilities.**
+**Missing details → we ask. Unmeasured numbers are labeled as estimates — never as “measured.”**
+
+> Don't ask AI for *the* pipeline. Ask it to show you the possibilities.
 
 ---
 
@@ -29,7 +33,7 @@ PDF → OCR → LLM → Excel
 
 Looks good. You build it. Then OCR fails on your docs, tables collapse, or the LLM invents cells.
 
-The AI wasn't necessarily "wrong".  
+The AI wasn't necessarily “wrong”.  
 **It committed to one approach before you explored the alternatives.**
 
 ---
@@ -123,7 +127,19 @@ python cli.py run \
   --samples-dir samples --db benchmarks.duckdb --runs 5
 ```
 
-Feedback, real-world benchmarks, and adapter PRs (Whisper, PaddleOCR, …) are welcome.
+---
+
+## Good first issues
+
+New to the project? Start with labeled issues — you don't need the full product context:
+
+| Repo | Easy wins |
+|------|-----------|
+| [pa-adapters](https://github.com/huytr91/pa-adapters/labels/good%20first%20issue) | Real component adapters (PaddleOCR, Whisper, …) |
+| [pa-schema](https://github.com/huytr91/pa-schema/labels/good%20first%20issue) | Docs, examples, clearer schema comments |
+| [pa-harness](https://github.com/huytr91/pa-harness/labels/good%20first%20issue) | Sample problems, CLI help text, tests |
+
+Look for the **`good first issue`** label. PRs that add a measured adapter or a clearer example are especially welcome.
 
 ---
 
