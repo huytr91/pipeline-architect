@@ -107,11 +107,11 @@ Details: [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/mult
 | Local benchmark harness | ✅ Public | [pa-harness](https://github.com/huytr91/pa-harness) |
 | Component adapters | ✅ Public | [pa-adapters](https://github.com/huytr91/pa-adapters) |
 | Interview + TOP 3 candidates | 🔒 Private / preview | — |
-| Ranking / prediction engine | 🔒 Commercial layer | — |
+| Ranking / Fit Score engine | 🔒 Private / preview (not published) | — |
 | Consulting web UI | 🔒 Private / preview | — |
 
 **Open today:** measure candidates locally and use a standard Solution Pipeline Packet.  
-**Full product:** interview → 3 candidates → evidence ranking (preview / commercial).
+**Full product (private preview):** interview → candidates to test → optional measure → evidence-gated export.
 
 ### Quick start (harness)
 
@@ -156,8 +156,9 @@ Example: [email + keyword SB123 + OCR slot](https://github.com/huytr91/pa-schema
 
 **Open:** methodology, schema, benchmark protocol, harness, adapters, contribution format.
 
-**Commercial / hosted:** ranking weights, prediction, mutation, failure patterns, experiment selection.
+**Private / preview (not published as a paid product yet):** ranking weights, prediction blend, mutation, failure patterns, experiment selection, consulting UI.
 
+> Prior is a recommendation. Measurement is evidence.  
 > Show the evidence. Hide the recipe.
 
 ---
