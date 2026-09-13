@@ -13,9 +13,11 @@ It may be reasonable — even correct — but you usually don't know that yet, a
 
 **Pipeline Architect** explores the problem with you, then surfaces **three viable pipeline candidates** so you can compare before you commit.
 
-**Missing details → we ask. Unmeasured numbers are labeled as estimates — never as “measured.”**
+**Missing details → we ask. Unmeasured numbers are labeled as estimates — never as “measured.”**  
+**Unattended production** on the export packet stays **false** until a real local run (`run_count > 0`).
 
-> Don't ask AI for *the* pipeline. Ask it to show you the possibilities.
+> Don't ask AI for *the* pipeline. Ask it to show you the possibilities.  
+> Prior is a recommendation. Measurement is evidence.
 
 ---
 
