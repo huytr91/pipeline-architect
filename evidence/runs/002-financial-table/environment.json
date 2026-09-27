@@ -1,0 +1,24 @@
+{
+  "hardware": {
+    "cpu_class": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+    "cores": 10,
+    "ram_bucket": "8-16GB",
+    "gpu_class": "none"
+  },
+  "harness_version": "0.1.0",
+  "runs_per_sample": 3,
+  "pipelines": [
+    "vn-pdf-extract-probe-v1",
+    "vn-pdf-extract-lite-v1",
+    "vn-pdf-extract-deep-v1"
+  ],
+  "sample_count": 7,
+  "measurement": "pypdf text-layer extract (operational)",
+  "not_measured": [
+    "ground-truth CER/WER",
+    "DOCX reconstruction quality",
+    "table cell accuracy",
+    "PaddleOCR / Tesseract scan OCR"
+  ],
+  "evidence_level": "L2_operational_measurement"
+}

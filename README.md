@@ -31,6 +31,53 @@ Evidence-backed decision
 
 Open-core · MIT · [multi-domain](https://github.com/huytr91/pa-schema/blob/main/docs/multi-domain.md) · local harness (no API key)
 
+> **Don't trust this README. Run the benchmark.**  
+> Pipeline Architect doesn't ask you to believe that pipeline A is better.  
+> It runs the candidates on a workload and shows you the evidence.  
+> → **[We actually ran it — raw results](./evidence/)**
+
+---
+
+## We actually ran it
+
+This is not a framework that only *describes* measurement.
+
+We ran three real workloads on a CPU-only laptop (Intel · 10 cores · 8–16 GB RAM · no GPU).  
+**3 pipelines × 3 runs/sample.** Metrics only — PDFs not published.
+
+| Case | Workload | Measured takeaway |
+|------|----------|-------------------|
+| [001 · VI reports](./evidence/runs/001-vietnamese-scanned-report/) | 4 multi-page reports | Probe fastest (p50 **1.1 s**); deep most text_chars; winners **differ** |
+| [002 · Financial tables](./evidence/runs/002-financial-table/) | 7 BCTC PDFs | ~**71%** likely-scan → probe/lite/deep same mean chars (**355**) — deep does **not** help |
+| [003 · Mixed batch](./evidence/runs/003-mixed-pdf-batch/) | 10 mixed PDFs | Lite wins p50; deep wins text_chars; p95 spans **tens of seconds** |
+
+### Flagship snippet — Case 002 (financial)
+
+**Prior:** “Financial PDFs need deep extract + layout.”
+
+**Measured** (pypdf text-layer — ops, not CER):
+
+| Pipeline | p50 | Peak RAM | Mean text_chars | Likely-scan |
+|----------|----:|---------:|----------------:|------------:|
+| A · probe (2 pages) | 157 ms | 167 MB | 355 | 71% |
+| B · lite (5 pages) | **65 ms** | 214 MB | 355 | 71% |
+| C · deep (20 pages) | 139 ms | 215 MB | 355 | 71% |
+
+Same extracted text. Different cost. **Prior ≠ Measured.**
+
+Raw JSON: [`evidence/runs/002-financial-table/result.json`](./evidence/runs/002-financial-table/result.json)
+
+**Honesty:** these runs measure latency / RAM / success / `text_chars` via **text-layer extract**. They are **not** ground-truth OCR accuracy or DOCX quality. Full scan-OCR adapters are the next evidence layer.
+
+```text
+PRIOR
+  ↓
+Candidate A ─┐
+Candidate B ─┼──→ LOCAL BENCHMARK ──→ OBSERVATIONS
+Candidate C ─┘                              ↓
+                                      EVIDENCE PACKET
+```
+
 ---
 
 ## The problem
@@ -241,7 +288,7 @@ Pipeline Architect makes that decision **empirical**.
 | Ranking / Fit Score engine | Private / preview | — |
 | Consulting web UI | Private / preview | — |
 
-**Open today:** measure candidates locally + standard packet format.  
+**Open today:** measure candidates locally + standard packet format + **[published L2 evidence runs](./evidence/)**.  
 **Private preview:** interview → candidates → optional measure → evidence-gated export.
 
 Domains: OCR, ASR, vision, and more — OCR is the **first vertical**, not a hard limit.  

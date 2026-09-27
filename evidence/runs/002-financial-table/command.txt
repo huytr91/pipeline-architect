@@ -1,0 +1,14 @@
+# Evidence case 002-financial-table
+# exported 2026-09-27T10:18:58.456984+00:00
+cd pa-harness
+python cli.py run \
+  --problem evidence-cases/002-financial-table/problem.yaml \
+  --pipelines pipelines/vn-pdf-extract-probe-v1.yaml \
+             pipelines/vn-pdf-extract-lite-v1.yaml \
+             pipelines/vn-pdf-extract-deep-v1.yaml \
+  --samples-dir evidence-cases/002-financial-table/samples \
+  --db evidence-cases/002-financial-table/bench.duckdb \
+  --runs 3
+python export_sample_results.py evidence-cases/002-financial-table/bench.duckdb evidence-cases/002-financial-table/out
+
+PDFs are NOT in git. Metrics only.

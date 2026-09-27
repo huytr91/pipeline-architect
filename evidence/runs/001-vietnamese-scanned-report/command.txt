@@ -1,0 +1,14 @@
+# Evidence case 001-vietnamese-scanned-report
+# exported 2026-09-27T10:18:58.425831+00:00
+cd pa-harness
+python cli.py run \
+  --problem evidence-cases/001-vietnamese-scanned-report/problem.yaml \
+  --pipelines pipelines/vn-pdf-extract-probe-v1.yaml \
+             pipelines/vn-pdf-extract-lite-v1.yaml \
+             pipelines/vn-pdf-extract-deep-v1.yaml \
+  --samples-dir evidence-cases/001-vietnamese-scanned-report/samples \
+  --db evidence-cases/001-vietnamese-scanned-report/bench.duckdb \
+  --runs 3
+python export_sample_results.py evidence-cases/001-vietnamese-scanned-report/bench.duckdb evidence-cases/001-vietnamese-scanned-report/out
+
+PDFs are NOT in git. Metrics only.
